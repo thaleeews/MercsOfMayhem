@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img width="300" height="300" alt="Retro Game Mayhem Logo" src="https://github.com/user-attachments/assets/77d70410-4e49-4683-ae32-e3b3662f2873" />
+  <img width="260" height="260" alt="Retro Game Mayhem Logo" src="https://github.com/user-attachments/assets/77d70410-4e49-4683-ae32-e3b3662f2873" />
 </p>
 
 # GRUPO C: Mercs of Mayhem
