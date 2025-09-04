@@ -7,7 +7,7 @@ O jogador assume o papel de mercenários insanos em batalhas cheias de explosõe
 
 
 ## 🤝 Equipe de Desenvolvimento
-- Guilherme Barboza de Albuquerque
+- Guilherme Barboza de Albuquerque (22.224.024-4)
 - Lucas Rebouças Silva (22.122.048-6)
 - Thales Clemente Pasquotto
 - Victor Caldeira Iak (22.122.057-7)
@@ -45,8 +45,7 @@ O lendário clássico arcade da SNK, famoso por sua pixel art detalhada, chefes 
 - **Cooperação Frenética:** destrua com amigos em tela compartilhada ou online  
 
 ### 👾 Créditos
-
-- Desenvolvido por Thales Pasquotto, ...  
+  
 - Inspirado em **Broforce** (Free Lives) e **Metal Slug** (SNK)  
 
 ---
