@@ -8,9 +8,9 @@ O jogador assume o papel de mercenários insanos em batalhas cheias de explosõe
 
 ## 🤝 Equipe de Desenvolvimento
 - Guilherme Barboza de Albuquerque
-- Lucas Rebouças Silva
+- Lucas Rebouças Silva (22.122.048-6)
 - Thales Clemente Pasquotto
-- Victor Caldeira Iak
+- Victor Caldeira Iak (22.122.057-7)
 
 ## 🚀 Sobre o Jogo
 
