@@ -12,3 +12,4 @@ Este projeto foi desenvolvido como parte do **Trabalho de Desenvolvimento de Jog
 ## Tópicos
 
 [📄 Introdução](docs/1.introducao.md)
+[📄 Público Alvo](docs/2.publico_alvo.md)
