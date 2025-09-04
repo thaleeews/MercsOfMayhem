@@ -5,6 +5,13 @@ O jogador assume o papel de mercenários insanos em batalhas cheias de explosõe
 
 ---
 
+
+## 🤝 Equipe de Desenvolvimento
+- Guilherme Barboza de Albuquerque
+- Lucas Rebouças Silva
+- Thales Clemente Pasquotto
+- Victor Caldeira Iak
+
 ## 🚀 Sobre o Jogo
 
 - **Gênero:** Ação / Arcade / Run and Gun  
@@ -43,3 +50,8 @@ O lendário clássico arcade da SNK, famoso por sua pixel art detalhada, chefes 
 - Inspirado em **Broforce** (Free Lives) e **Metal Slug** (SNK)  
 
 ---
+
+## 🎓 Trabalho Acadêmico
+
+Este projeto foi desenvolvido como parte do **Trabalho de Desenvolvimento de Jogos** apresentado ao **Centro Universitário FEI**, atendendo aos requisitos para aprovação na disciplina **Desenvolvimento de Jogos Digitais (CC7140)** do curso de **Ciência da Computação**, sob orientação do **Prof. Dr. Fagner de Assis Moura Pimentel**.
+
