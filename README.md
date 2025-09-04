@@ -1,15 +1,19 @@
-# 🎮 Mercs of Mayhem
+# Mercs of Mayhem
 
 **Mercs of Mayhem** é um jogo de ação **run and gun** em pixel art, inspirado no caos explosivo de **Broforce** e no estilo clássico de **Metal Slug**.  
 O jogador assume o papel de mercenários insanos em batalhas cheias de explosões e inimigos caricatos.
 
 ---
 
-## 🤝 Equipe de Desenvolvimento
+## Equipe de Desenvolvimento
 - Guilherme Barboza de Albuquerque (22.224.024-4)
 - Lucas Rebouças Silva (22.122.048-6)
 - Thales Clemente Pasquotto
 - Victor Caldeira Iak (22.122.057-7)
+
+---
+
+[📄 Introdução](docs/1.introducao.md)
 
 ---
 
