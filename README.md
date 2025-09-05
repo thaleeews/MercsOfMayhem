@@ -11,7 +11,7 @@ Este projeto foi desenvolvido como parte do **Trabalho de Desenvolvimento de Jog
 
 - Guilherme Barboza de Albuquerque (22.224.024-4)
 - Lucas Rebouças Silva (22.122.048-6)
-- Thales Clemente Pasquotto
+- Thales Clemente Pasquotto (22.222.033-7)
 - Victor Caldeira Iak (22.122.057-7)
 
 ## Tópicos
