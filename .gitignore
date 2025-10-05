@@ -46,51 +46,30 @@ ExportedObj/
 *.opendb
 *.VC.db
 
-<<<<<<< HEAD
 # Unity-generated meta files
-=======
-# Unity3D generated meta files
->>>>>>> 1b4abf571d3927550ed6b573d0ea723b81d780e8
 *.pidb.meta
 *.pdb.meta
 *.mdb.meta
 
-<<<<<<< HEAD
-=======
 # Unity3D generated file on crash reports
 sysinfo.txt
 
 # Mono auto generated files
 mono_crash.*
 
->>>>>>> 1b4abf571d3927550ed6b573d0ea723b81d780e8
 # Builds
 *.apk
 *.aab
 *.unitypackage
-<<<<<<< HEAD
 *.app
 *.unitypackage.meta
-
-# Crashlytics
-=======
-*.unitypackage.meta
-*.app
 
 # Crashlytics generated file
->>>>>>> 1b4abf571d3927550ed6b573d0ea723b81d780e8
 crashlytics-build.properties
 
 # TestRunner generated files
 InitTestScene*.unity*
 
-<<<<<<< HEAD
-# Addressables
-/ServerData/
-/[Aa]ssets/StreamingAssets/aa*
-/[Aa]ssets/AddressableAssetsData/link.xml*
-/[Aa]ssets/Addressables_Temp*
-=======
 # Addressables default ignores, before user customizations
 /ServerData
 /[Aa]ssets/StreamingAssets/aa*
@@ -99,7 +78,6 @@ InitTestScene*.unity*
 # By default, Addressables content builds will generate addressables_content_state.bin
 # files in platform-specific subfolders, for example:
 # /Assets/AddressableAssetsData/OSX/addressables_content_state.bin
->>>>>>> 1b4abf571d3927550ed6b573d0ea723b81d780e8
 /[Aa]ssets/AddressableAssetsData/*/*.bin*
 
 # Visual Scripting auto-generated files
@@ -109,8 +87,4 @@ InitTestScene*.unity*
 /[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers.meta
 
 # Auto-generated scenes by play mode tests
-<<<<<<< HEAD
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
-=======
-/[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
->>>>>>> 1b4abf571d3927550ed6b573d0ea723b81d780e8
