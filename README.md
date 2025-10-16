@@ -14,6 +14,9 @@ Este projeto foi desenvolvido como parte do **Trabalho de Desenvolvimento de Jog
 - Thales Clemente Pasquotto (22.222.033-7)
 - Victor Caldeira Iak (22.122.057-7)
 
+## Apresentação do Projeto
+https://youtu.be/XMuOHjaoiXM
+
 ## Tópicos
 
 [📄 Introdução](docs/1.introducao.md)
