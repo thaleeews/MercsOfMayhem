@@ -69,7 +69,7 @@ namespace MercsOfMayhem.Characters
 
         private void HandleMovement()
         {
-            rb.velocity = new Vector2(horizontalInput * moveSpeed, rb.velocity.y);
+            rb.linearVelocity = new Vector2(horizontalInput * moveSpeed, rb.linearVelocity.y);
 
             // Flip sprite based on movement direction
             if (horizontalInput > 0 && spriteRenderer != null)
@@ -88,14 +88,14 @@ namespace MercsOfMayhem.Characters
         {
             if (animator == null) return;
 
-            animator.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
+            animator.SetFloat("Speed", Mathf.Abs(rb.linearVelocity.x));
             animator.SetBool("IsGrounded", isGrounded);
-            animator.SetFloat("VelocityY", rb.velocity.y);
+            animator.SetFloat("VelocityY", rb.linearVelocity.y);
         }
 
         private void Jump()
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         }
 
         private void CheckGroundStatus()

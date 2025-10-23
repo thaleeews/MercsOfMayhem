@@ -24,7 +24,7 @@ namespace MercsOfMayhem.Weapons
         public void SetDirection(Vector2 dir)
         {
             direction = dir.normalized;
-            rb.velocity = direction * speed;
+            rb.linearVelocity = direction * speed;
 
             // Rotate sprite to face direction
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;

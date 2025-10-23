@@ -2,69 +2,47 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
-  tags:
-  - Enemy
-  - Projectile
-  - Pickup
-  - Hazard
+  serializedVersion: 3
+  tags: []
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  -
+  - 
   - Water
   - UI
-  - Player
+  - Background3
+  - Background2
+  - Background1
+  - Game
   - Ground
-  - Enemy
-  - Projectile
-  - EnemyProjectile
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
-  -
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   m_SortingLayers:
-  - name: Background
-    uniqueID: 1
-    locked: 0
-  - name: MiddleGround
-    uniqueID: 2
-    locked: 0
-  - name: Ground
-    uniqueID: 3
-    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Player
-    uniqueID: 4
+  - name: Game
+    uniqueID: 3464794057
     locked: 0
-  - name: Enemies
-    uniqueID: 5
-    locked: 0
-  - name: Projectiles
-    uniqueID: 6
-    locked: 0
-  - name: Foreground
-    uniqueID: 7
-    locked: 0
-  - name: UI
-    uniqueID: 8
-    locked: 0
+  m_RenderingLayers:
+  - Default
