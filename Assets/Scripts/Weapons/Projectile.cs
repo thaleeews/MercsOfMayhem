@@ -27,19 +27,27 @@ namespace MercsOfMayhem.Weapons
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            // evita colidir com quem atirou
+            // 1. Evita colidir com quem atirou (como você já tinha)
             if (collision.gameObject == owner)
                 return;
-
-            // verifica se acertou inimigo
-            if (((1 << collision.gameObject.layer) & hitLayers) != 0)
+        
+            // 2. Verifica se colidiu com o Inimigo
+            if (collision.CompareTag("Enemy"))
             {
                 var enemy = collision.GetComponent<Enemy>();
                 if (enemy != null)
                 {
                     enemy.TakeDamage(damage);
                 }
-
+                
+                // Destrói a bala ao acertar o inimigo
+                Destroy(gameObject);
+            }
+            
+            // 3. Verifica se colidiu com o Chão
+            else if (collision.CompareTag("Ground"))
+            {
+                // Destrói a bala ao acertar o chão
                 Destroy(gameObject);
             }
         }

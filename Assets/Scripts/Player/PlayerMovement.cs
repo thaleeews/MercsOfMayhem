@@ -96,19 +96,33 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Shoot()
+{
+    if (bulletPrefab == null || firePoint == null) return;
+
+    GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+    Vector2 direction = isFacingRight ? Vector2.right : Vector2.left;
+
+    var projectile = bullet.GetComponent<MercsOfMayhem.Weapons.Projectile>();
+    if (projectile != null)
     {
-        if (bulletPrefab == null || firePoint == null) return;
+        projectile.SetDirection(direction);
+        projectile.SetOwner(gameObject);
+        
+        // --- CHAVE DA SOLUÇÃO AQUI ---
+        // 1. Pega o Collider do projétil
+        Collider2D bulletCollider = bullet.GetComponent<Collider2D>();
+        
+        // 2. Pega o Collider do jogador (owner)
+        Collider2D ownerCollider = GetComponent<Collider2D>(); // Ou Rigidbody2D, se for o caso
 
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-        Vector2 direction = isFacingRight ? Vector2.right : Vector2.left;
-
-        var projectile = bullet.GetComponent<MercsOfMayhem.Weapons.Projectile>();
-        if (projectile != null)
+        // 3. Ignora a colisão entre eles.
+        if (bulletCollider != null && ownerCollider != null)
         {
-            projectile.SetDirection(direction);
-            projectile.SetOwner(gameObject);
+            Physics2D.IgnoreCollision(bulletCollider, ownerCollider, true);
         }
+        // -----------------------------
     }
+}
 
     private void CheckGrounded()
     {
