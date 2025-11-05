@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections; // Adicionado para a Coroutine
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
@@ -8,10 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpForce = 4.5f;
 
-    [Header("Shooting")]
-    [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private Transform firePoint;
-    [SerializeField] private float fireRate = 0.3f;
+    // --- LÓGICA DE TIRO REMOVIDA DESTA SEÇÃO ---
 
     [Header("Components")]
     [SerializeField] private SpriteRenderer spriteRenderer;
@@ -22,7 +20,6 @@ public class PlayerMovement : MonoBehaviour
     private float horizontalInput;
     private bool isFacingRight = true;
     private bool isGrounded;
-    private float nextFireTime;
     private bool isKnockedBack = false;
 
     [Header("Ground Check")]
@@ -40,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (isKnockedBack) return; // enquanto sofre knockback, ignora input
+        if (isKnockedBack) return; 
 
         HandleInput();
         FlipCharacterX();
@@ -50,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isKnockedBack) return; // evita interferir durante o knockback
+        if (isKnockedBack) return; 
         HandleMovement();
     }
 
@@ -63,11 +60,7 @@ public class PlayerMovement : MonoBehaviour
             Jump();
         }
 
-        if (Input.GetButton("Fire1") && Time.time >= nextFireTime)
-        {
-            Shoot();
-            nextFireTime = Time.time + fireRate;
-        }
+        // --- LÓGICA DE TIRO REMOVIDA DESTA FUNÇÃO ---
     }
 
     private void HandleMovement()
@@ -95,34 +88,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void Shoot()
-{
-    if (bulletPrefab == null || firePoint == null) return;
-
-    GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-    Vector2 direction = isFacingRight ? Vector2.right : Vector2.left;
-
-    var projectile = bullet.GetComponent<MercsOfMayhem.Weapons.Projectile>();
-    if (projectile != null)
-    {
-        projectile.SetDirection(direction);
-        projectile.SetOwner(gameObject);
-        
-        // --- CHAVE DA SOLUÇÃO AQUI ---
-        // 1. Pega o Collider do projétil
-        Collider2D bulletCollider = bullet.GetComponent<Collider2D>();
-        
-        // 2. Pega o Collider do jogador (owner)
-        Collider2D ownerCollider = GetComponent<Collider2D>(); // Ou Rigidbody2D, se for o caso
-
-        // 3. Ignora a colisão entre eles.
-        if (bulletCollider != null && ownerCollider != null)
-        {
-            Physics2D.IgnoreCollision(bulletCollider, ownerCollider, true);
-        }
-        // -----------------------------
-    }
-}
+    // --- FUNÇÃO SHOOT() REMOVIDA DAQUI ---
 
     private void CheckGrounded()
     {
@@ -149,24 +115,21 @@ public class PlayerMovement : MonoBehaviour
 
     public void KnockbackPlayer(Vector2 knockbackForce, int direction)
     {
-        if (isKnockedBack) return; // previne múltiplos knockbacks
+        if (isKnockedBack) return; 
 
         isKnockedBack = true;
         movementState.SetMoveState(PlayerMovementState.MoveState.Fall);
 
-        // limpa velocidade anterior
         rigidBody.linearVelocity = Vector2.zero;
         rigidBody.angularVelocity = 0f;
 
-        // aplica força no sentido inverso
         knockbackForce.x *= direction;
         rigidBody.AddForce(knockbackForce, ForceMode2D.Impulse);
 
-        // libera controle após curto tempo
         StartCoroutine(RecoverFromKnockback(0.4f));
     }
 
-    private System.Collections.IEnumerator RecoverFromKnockback(float delay)
+    private IEnumerator RecoverFromKnockback(float delay)
     {
         yield return new WaitForSeconds(delay);
         isKnockedBack = false;
@@ -182,4 +145,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public bool IsGrounded => isGrounded;
+
+    // --- ADICIONADO PARA O SCRIPT DE TIRO SABER A DIREÇÃO ---
+    public bool IsFacingRight => isFacingRight;
 }

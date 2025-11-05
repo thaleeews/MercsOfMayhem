@@ -12,7 +12,7 @@ namespace MercsOfMayhem.Weapons
 
         private void Update()
         {
-            transform.Translate(direction * speed * Time.deltaTime);
+            transform.Translate(direction * speed * Time.deltaTime, Space.World);
         }
 
         public void SetDirection(Vector2 dir)
@@ -30,7 +30,7 @@ namespace MercsOfMayhem.Weapons
             // 1. Evita colidir com quem atirou (como você já tinha)
             if (collision.gameObject == owner)
                 return;
-        
+
             // 2. Verifica se colidiu com o Inimigo
             if (collision.CompareTag("Enemy"))
             {
@@ -39,11 +39,11 @@ namespace MercsOfMayhem.Weapons
                 {
                     enemy.TakeDamage(damage);
                 }
-                
+
                 // Destrói a bala ao acertar o inimigo
                 Destroy(gameObject);
             }
-            
+
             // 3. Verifica se colidiu com o Chão
             else if (collision.CompareTag("Ground"))
             {
