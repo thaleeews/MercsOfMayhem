@@ -10,6 +10,11 @@ namespace MercsOfMayhem.Weapons
         private Vector2 direction;
         private GameObject owner;
 
+
+        void Awake()
+        {
+            Destroy(gameObject, 3f);
+        }
         private void Update()
         {
             transform.Translate(direction * speed * Time.deltaTime, Space.World);
@@ -31,6 +36,10 @@ namespace MercsOfMayhem.Weapons
             if (collision.gameObject == owner)
                 return;
 
+            if (collision.isTrigger)
+            {
+            return; // Pare a função aqui e não faça nada.
+            }
             // 2. Verifica se colidiu com o Inimigo
             if (collision.CompareTag("Enemy"))
             {
@@ -44,12 +53,17 @@ namespace MercsOfMayhem.Weapons
                 Destroy(gameObject);
             }
 
-            // 3. Verifica se colidiu com o Chão
-            else if (collision.CompareTag("Ground"))
+            else if (collision.CompareTag("Player"))
             {
-                // Destrói a bala ao acertar o chão
-                Destroy(gameObject);
-            }
+                var playerHealth = collision.GetComponent<PlayerHealth>(); 
+                if (playerHealth != null)
+                {
+                    playerHealth.DamagePlayer(damage); 
+                    // Se der erro, o nome da sua função pode ser 'TakeDamage'
+                    // playerHealth.TakeDamage(damage); 
+                }
+                Destroy(gameObject); // Destrói a bala
+        }
         }
     }
 }

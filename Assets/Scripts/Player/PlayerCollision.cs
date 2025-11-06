@@ -32,7 +32,7 @@ public class PlayerCollision : MonoBehaviour
             velocity.y = 0f;
             rigidBody.linearVelocity = velocity;
             rigidBody.AddForce(Vector2.up * bounceForce, ForceMode2D.Impulse);
-            enemy.Die();
+            enemy.TakeDamage(1000);
         }
         else
         {
