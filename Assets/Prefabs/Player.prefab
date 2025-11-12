@@ -139,6 +139,7 @@ GameObject:
   - component: {fileID: 2157820143026257962}
   - component: {fileID: 5362171321040128194}
   - component: {fileID: 5440433805654554163}
+  - component: {fileID: 8961568620219209676}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -351,6 +352,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
   animator: {fileID: 3351651471337175596}
   health: 10
+  deathAnimationTime: 1.5
 --- !u!114 &5362171321040128194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -396,6 +398,19 @@ MonoBehaviour:
   firePointJump: {fileID: 608017958843499343}
   firePointJumpUp: {fileID: 3134738050639589961}
   firePointJumpDown: {fileID: 1706628559304002910}
+--- !u!114 &8961568620219209676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5233683271128961724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff0e3e2a788dcb9499d162efca3ebfa5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerPhysicsMaterial
+  playerMaterial: {fileID: 0}
 --- !u!1 &5765651910837129774
 GameObject:
   m_ObjectHideFlags: 0
