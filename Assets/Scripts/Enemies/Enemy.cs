@@ -16,7 +16,6 @@ public class Enemy : MonoBehaviour
     [SerializeField] private string playerTag = "Player"; // Qual tag seu Player usa?
     private State currentState;     // O estado atual
     private Transform playerTarget; // O "alvo" (o player)
-    [SerializeField] private float verticalAimTolerance = 0.5f;
 
     [Header("Enemy Stats")]
     [SerializeField] protected int maxHealth = 100;
@@ -175,30 +174,21 @@ public class Enemy : MonoBehaviour
         int directionToPlayer = GetDirection(playerTarget);
         movementScript.ForceFaceDirection(directionToPlayer);
         
-        // 2. DECIDIR A ANIMAÇÃO (Com base na altura do Player)
-        float yDifference = playerTarget.position.y - transform.position.y;
+		// 2. DECIDIR A ANIMAÇÃO (por ângulo, evitando mirar 90° para cima por pequena diferença de altura)
+		Vector2 toPlayer = playerTarget.position - transform.position;
+		// Usamos Mathf.Abs no X para considerar apenas o ângulo relativo ao eixo horizontal
+		float angleDeg = Mathf.Atan2(toPlayer.y, Mathf.Abs(toPlayer.x)) * Mathf.Rad2Deg;
 
-        if (yDifference > verticalAimTolerance)
-        {
-            // Player está ACIMA
-            anim.SetBool("ShootNormal", false);
-            anim.SetBool("ShootUp", true);
-            anim.SetBool("ShootDown", false);
-        }
-        else if (yDifference < -verticalAimTolerance)
-        {
-            // Player está ABAIXO
-            anim.SetBool("ShootNormal", false);
-            anim.SetBool("ShootUp", false);
-            anim.SetBool("ShootDown", true);
-        }
-        else
-        {
-            // Player está NA MESMA ALTURA (em frente)
-            anim.SetBool("ShootNormal", true);
-            anim.SetBool("ShootUp", false);
-            anim.SetBool("ShootDown", false);
-        }
+		// Limiares configuráveis (valores seguros para evitar snap para 90°)
+		const float upAimAngleThreshold = 60f;   // acima disso, animação para cima
+		const float downAimAngleThreshold = -30f; // abaixo disso, animação para baixo
+
+		bool aimUp = angleDeg >= upAimAngleThreshold;
+		bool aimDown = angleDeg <= downAimAngleThreshold;
+
+		anim.SetBool("ShootNormal", !aimUp && !aimDown);
+		anim.SetBool("ShootUp", aimUp);
+		anim.SetBool("ShootDown", aimDown);
 
         // 3. ATIRAR (Isso já funciona)
         // O Cérebro dá a ordem para a Arma "Tentar Atirar"
@@ -228,16 +218,24 @@ public class Enemy : MonoBehaviour
             movementScript.enabled = false; // Desliga as "pernas"
         }
 
+		// IMPORTANTE: Mantemos o collider ligado para permitir que o inimigo caia e colida com o chão
+        // Mas desativamos o trigger para evitar colisões indesejadas
         if (col != null)
         {
-            col.enabled = false; // Desliga o collider principal
+            col.isTrigger = false; // Garante que não é trigger para colidir com o chão
         }
         
-        // Desliga o Rigidbody
+		// IMPORTANTE: Mantemos o Rigidbody dinâmico para que a gravidade faça o inimigo cair
+        // Não zeramos a velocidade Y para permitir que caia naturalmente
         if (rb != null)
         {
-            rb.linearVelocity = Vector2.zero;
-            rb.isKinematic = true; 
+            // Mantém a velocidade X para momentum, mas permite queda livre
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
+			rb.bodyType = RigidbodyType2D.Dynamic;
+			// Garantimos gravidade mínima para que caia
+			rb.gravityScale = Mathf.Max(rb.gravityScale, 1f);
+            // Desativa constraints para permitir rotação e movimento livre
+            rb.constraints = RigidbodyConstraints2D.None;
         }
 
         Invoke(nameof(DestroyEnemyObject), deathAnimationTime);
@@ -255,8 +253,10 @@ public class Enemy : MonoBehaviour
         
         // (Seu código de HitPlayer continua o mesmo)
         int direction = GetDirection(playerTransform);
-        FindObjectOfType<PlayerMovement>().KnockbackPlayer(knockbackToPlayer, direction);
-        FindObjectOfType<PlayerHealth>().DamagePlayer(damageOnContact);
+        var playerMovement = FindFirstObjectByType<PlayerMovement>();
+        var playerHealth = FindFirstObjectByType<PlayerHealth>();
+        if (playerMovement != null) playerMovement.KnockbackPlayer(knockbackToPlayer, direction);
+        if (playerHealth != null) playerHealth.DamagePlayer(damageOnContact);
         
         if (movementScript != null)
         {

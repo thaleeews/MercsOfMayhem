@@ -54,21 +54,45 @@ public class PlayerShoot : MonoBehaviour
         bool isLookingUp = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
         bool isLookingDown = Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow);
 
-        // --- 2. LER ESTADO DE MOVIMENTO (do Animator) ---
+        // --- 2. LER ESTADO DE MOVIMENTO (do Animator e do PlayerMovement) ---
         bool isJumping = animator.GetBool(IS_JUMPING_BOOL);
         bool isFalling = animator.GetBool(IS_FALLING_BOOL);
+        bool isRunning = animator.GetBool("IsRunning");
         bool isInAir = isJumping || isFalling;
+        bool isMoving = Mathf.Abs(playerMovement.GetComponent<Rigidbody2D>().linearVelocity.x) > 0.1f;
+        bool isGrounded = playerMovement.IsGrounded;
 
         // --- 3. ATUALIZAR O ANIMATOR (O CÉREBRO) ---
-        // Esta é a nova lógica. Ela define TODOS os bools de tiro de uma só vez.
-        // Apenas um (ou nenhum) será 'true'. Isso evita conflitos.
-
-        animator.SetBool(SHOOT_NORMAL_BOOL,      isShooting && !isInAir && !isLookingUp && !isLookingDown);
-        animator.SetBool(SHOOT_UP_BOOL,          isShooting && !isInAir &&  isLookingUp);
-        animator.SetBool(SHOOT_DOWN_BOOL,        isShooting && !isInAir &&  isLookingDown);
-        animator.SetBool(JUMP_SHOOT_NORMAL_BOOL, isShooting &&  isInAir && !isLookingUp && !isLookingDown);
-        animator.SetBool(JUMP_SHOOT_UP_BOOL,     isShooting &&  isInAir &&  isLookingUp);
-        animator.SetBool(JUMP_SHOOT_DOWN_BOOL,   isShooting &&  isInAir &&  isLookingDown);
+        // IMPORTANTE: As animações de tiro devem ser combinadas com as animações de movimento
+        // O Animator precisa ter transições que permitam Run+Shoot, Jump+Shoot, etc.
+        
+        // Se está no ar (pulando ou caindo), usa animações de tiro no ar
+        if (isInAir)
+        {
+            animator.SetBool(SHOOT_NORMAL_BOOL, false);
+            animator.SetBool(SHOOT_UP_BOOL, false);
+            animator.SetBool(SHOOT_DOWN_BOOL, false);
+            animator.SetBool(JUMP_SHOOT_NORMAL_BOOL, isShooting && !isLookingUp && !isLookingDown);
+            animator.SetBool(JUMP_SHOOT_UP_BOOL, isShooting && isLookingUp);
+            animator.SetBool(JUMP_SHOOT_DOWN_BOOL, isShooting && isLookingDown);
+        }
+        else
+        {
+            // Se está no chão, usa animações de tiro no chão
+            // IMPORTANTE: Mantém IsRunning ativo se estiver se movendo, mesmo quando atira
+            animator.SetBool(JUMP_SHOOT_NORMAL_BOOL, false);
+            animator.SetBool(JUMP_SHOOT_UP_BOOL, false);
+            animator.SetBool(JUMP_SHOOT_DOWN_BOOL, false);
+            animator.SetBool(SHOOT_NORMAL_BOOL, isShooting && !isLookingUp && !isLookingDown);
+            animator.SetBool(SHOOT_UP_BOOL, isShooting && isLookingUp);
+            animator.SetBool(SHOOT_DOWN_BOOL, isShooting && isLookingDown);
+            
+            // Garante que IsRunning seja mantido se estiver se movendo, mesmo quando atira
+            if (isMoving && isGrounded)
+            {
+                animator.SetBool("IsRunning", true);
+            }
+        }
 
         // --- 4. LÓGICA DE DISPARO DA BALA (Ainda não implementada) ---
         // (Vamos adicionar isso no próximo passo)

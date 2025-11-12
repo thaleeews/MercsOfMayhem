@@ -97,6 +97,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void UpdateAnimationState()
     {
+        // IMPORTANTE: Não atualiza o estado se estiver atirando, para permitir combinação de animações
+        // O PlayerShoot vai gerenciar as animações de tiro, mas mantém os estados de movimento
+        
         if (!isGrounded)
         {
             if (rigidBody.linearVelocity.y > 0.1f)
@@ -106,6 +109,8 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
+            // Sempre atualiza o estado de movimento, mesmo quando atirando
+            // Isso permite que Run+Shoot funcione corretamente
             if (Mathf.Abs(rigidBody.linearVelocity.x) > 0.1f)
                 movementState.SetMoveState(PlayerMovementState.MoveState.Run);
             else
