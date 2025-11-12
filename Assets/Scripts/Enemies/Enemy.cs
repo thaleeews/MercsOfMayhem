@@ -26,6 +26,15 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Vector2 knockbackToPlayer = new Vector2(3f, 5f);
     [SerializeField] private float knockbackDelayToSelf = 1.5f;
     [SerializeField] private float deathAnimationTime = 1.2f;
+    
+    [Header("Hit Effect")]
+    [SerializeField] private float flashDuration = 0.1f; // Duração de cada piscada
+    [SerializeField] private int flashCount = 3; // Número de piscadas
+    
+    [Header("Death Effect")]
+    [SerializeField] private float deathFadeDuration = 0.8f; // Duração do fade out ao morrer
+    [SerializeField] private bool addDeathRotation = true; // Adiciona rotação na morte
+    [SerializeField] private float deathRotationSpeed = 360f; // Velocidade de rotação na morte
 
     protected int currentHealth;
     // --- MUDANÇA: 'isDead' é substituído pelo 'currentState'
@@ -36,6 +45,7 @@ public class Enemy : MonoBehaviour
     private EnemyMovement movementScript; // As "pernas"
     private Rigidbody2D rb;
     private EnemyShoot enemyShoot;
+    private SpriteRenderer spriteRenderer;
     
     // --- NOVO: Referência para o script de tiro que VAMOS CRIAR ---
     // private EnemyShoot enemyShoot; 
@@ -48,7 +58,8 @@ public class Enemy : MonoBehaviour
         col = GetComponent<Collider2D>(); // Assume que este é o CapsuleCollider
         movementScript = GetComponent<EnemyMovement>();
         rb = GetComponent<Rigidbody2D>();
-        enemyShoot = GetComponent<EnemyShoot>(); 
+        enemyShoot = GetComponent<EnemyShoot>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
         // --- MUDANÇA: Começamos no estado de Patrulha ---
         ChangeState(State.Patrolling);
@@ -206,7 +217,8 @@ public class Enemy : MonoBehaviour
     // Esta é a sua função Die() antiga, mas agora é privada.
     private void HandleDeathLogic()
     {
-        // (isDead = true;) // Não precisamos mais, o estado é 'Dead'
+        // Para qualquer efeito de flash que esteja rodando
+        StopCoroutine(nameof(FlashWhite));
 
         if (anim != null)
         {
@@ -238,7 +250,8 @@ public class Enemy : MonoBehaviour
             rb.constraints = RigidbodyConstraints2D.None;
         }
 
-        Invoke(nameof(DestroyEnemyObject), deathAnimationTime);
+        // Inicia os efeitos visuais de morte
+        StartCoroutine(nameof(DeathEffect));
     }
 
     private void DestroyEnemyObject()
@@ -271,18 +284,92 @@ public class Enemy : MonoBehaviour
         
         currentHealth -= damage;
         
+        Debug.Log($"🎯 {gameObject.name} tomou {damage} de dano! Vida: {currentHealth}/{maxHealth}");
+        
+        // Efeito visual de dano (piscar branco)
+        if (spriteRenderer != null)
+        {
+            StopCoroutine(nameof(FlashWhite)); // Para o efeito anterior se ainda estiver rodando
+            StartCoroutine(nameof(FlashWhite));
+        }
+        
         if (currentHealth <= 0)
         {
+            Debug.Log($"💀 {gameObject.name} MORREU!");
             // --- MUDANÇA: Em vez de chamar Die(), trocamos o estado ---
             ChangeState(State.Dead);
         }
     }
 
+    // Corrotina que faz o sprite piscar branco quando toma dano
+    private IEnumerator FlashWhite()
+    {
+        Color originalColor = spriteRenderer.color;
+        
+        for (int i = 0; i < flashCount; i++)
+        {
+            // Fica branco
+            spriteRenderer.color = Color.white;
+            yield return new WaitForSeconds(flashDuration);
+            
+            // Volta para a cor original
+            spriteRenderer.color = originalColor;
+            yield return new WaitForSeconds(flashDuration);
+        }
+        
+        // Garante que volta para a cor original no final
+        spriteRenderer.color = originalColor;
+    }
     
+    // Corrotina que faz o efeito visual de morte (fade out + rotação)
+    private IEnumerator DeathEffect()
+    {
+        float elapsed = 0f;
+        Color startColor = spriteRenderer.color;
+        Quaternion startRotation = transform.rotation;
+        
+        // Espera um pouco antes de começar o fade (para ver a animação de morte)
+        float delayBeforeFade = Mathf.Max(0, deathAnimationTime - deathFadeDuration);
+        if (delayBeforeFade > 0)
+        {
+            yield return new WaitForSeconds(delayBeforeFade);
+        }
+        
+        // Fade out gradual + rotação
+        while (elapsed < deathFadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            float progress = elapsed / deathFadeDuration;
+            
+            // Fade out (alpha vai de 1 para 0)
+            if (spriteRenderer != null)
+            {
+                Color newColor = startColor;
+                newColor.a = Mathf.Lerp(1f, 0f, progress);
+                spriteRenderer.color = newColor;
+            }
+            
+            // Rotação na morte (opcional)
+            if (addDeathRotation && rb != null)
+            {
+                float rotationAmount = deathRotationSpeed * Time.deltaTime;
+                transform.Rotate(0, 0, rotationAmount);
+            }
+            
+            yield return null;
+        }
+        
+        // Destrói o inimigo no final
+        DestroyEnemyObject();
+    }
 
     // --- MUDANÇA: Adicionamos a lógica de "Virar para o Player" ---
     
 
     private int GetDirection(Transform playerTransform)
         => transform.position.x > playerTransform.position.x ? -1 : 1;
+    
+    // Métodos públicos para a HealthBar acessar
+    public int GetCurrentHealth() => currentHealth;
+    public int GetMaxHealth() => maxHealth;
 }

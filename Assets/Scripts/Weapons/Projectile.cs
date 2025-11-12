@@ -46,7 +46,12 @@ namespace MercsOfMayhem.Weapons
                 var enemy = collision.GetComponent<Enemy>();
                 if (enemy != null)
                 {
+                    Debug.Log($"💥 BALA ACERTOU O INIMIGO '{collision.gameObject.name}'! Dano: {damage}");
                     enemy.TakeDamage(damage);
+                }
+                else
+                {
+                    Debug.LogWarning($"⚠️ Objeto com tag 'Enemy' não tem o componente Enemy: {collision.gameObject.name}");
                 }
 
                 // Destrói a bala ao acertar o inimigo
