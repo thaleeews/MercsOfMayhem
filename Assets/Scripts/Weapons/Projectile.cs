@@ -63,7 +63,12 @@ namespace MercsOfMayhem.Weapons
                     // playerHealth.TakeDamage(damage); 
                 }
                 Destroy(gameObject); // Destrói a bala
-        }
+            }
+
+            else if (collision.CompareTag("Ground"))
+            {
+                Destroy(gameObject); // Destrói a bala
+            }
         }
     }
 }
