@@ -58,6 +58,21 @@ namespace MercsOfMayhem.Weapons
                 Destroy(gameObject);
             }
 
+            else if (collision.CompareTag("Boss"))
+            {
+                var bossHealth = collision.GetComponent<BossHealth>(); 
+                if (bossHealth != null)
+                {
+                    Debug.Log($"💥 BALA ACERTOU O BOSS '{collision.gameObject.name}'! Dano: {damage}");
+                    bossHealth.TakeDamage(damage); 
+                }
+                else
+                {
+                    Debug.LogWarning($"⚠️ Objeto com tag 'Boss' não tem o componente BossHealth: {collision.gameObject.name}");
+                }
+                Destroy(gameObject); // Destrói a bala
+            }
+
             else if (collision.CompareTag("Player"))
             {
                 var playerHealth = collision.GetComponent<PlayerHealth>(); 
