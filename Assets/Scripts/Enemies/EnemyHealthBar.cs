@@ -8,12 +8,16 @@ namespace MercsOfMayhem.Enemies
         [Header("Referências")]
         [SerializeField] private Enemy enemy;
         [SerializeField] private Image fillImage;
-        [SerializeField] private GameObject healthBarCanvas;
+        [SerializeField] private GameObject healthBarCanvas; // <-- Este ainda usamos para o timer
+        
+        // --- NOVO: Referência para os objetos visuais ---
+        [SerializeField] private GameObject backgroundObject; // Arraste o 'Background' aqui
+        [SerializeField] private GameObject fillObject;     // Arraste o 'Fill' aqui
         
         [Header("Configurações")]
-        [SerializeField] private Vector3 offset = new Vector3(0, 1.5f, 0); // Offset acima do inimigo
-        [SerializeField] private bool hideWhenFull = true; // Esconde quando está com vida cheia
-        [SerializeField] private float hideDelay = 2f; // Tempo para esconder após ficar cheia
+        [SerializeField] private Vector3 offset = new Vector3(0, 1.5f, 0); 
+        [SerializeField] private bool hideWhenFull = true; 
+        [SerializeField] private float hideDelay = 2f; 
         
         private int maxHealth;
         private int currentHealth;
@@ -30,9 +34,11 @@ namespace MercsOfMayhem.Enemies
                 currentHealth = maxHealth;
             }
             
+            // --- MUDANÇA: Esconde os filhos, não o pai ---
             if (hideWhenFull)
             {
-                healthBarCanvas?.SetActive(false);
+                // healthBarCanvas?.SetActive(false); // <-- Linha antiga
+                SetVisualsActive(false); // <-- Nova função
             }
             
             UpdateHealthBar();
@@ -55,37 +61,51 @@ namespace MercsOfMayhem.Enemies
                     currentHealth = newHealth;
                     UpdateHealthBar();
                     
-                    // Mostra a barra quando toma dano
-                    if (hideWhenFull && healthBarCanvas != null)
+                    // --- MUDANÇA: Mostra os filhos ---
+                    if (hideWhenFull)
                     {
-                        healthBarCanvas.SetActive(true);
+                        // healthBarCanvas.SetActive(true); // <-- Linha antiga
+                        SetVisualsActive(true); // <-- Nova função
                         hideTimer = hideDelay;
                     }
                 }
             }
             
             // Timer para esconder a barra quando estiver cheia
-            if (hideWhenFull && healthBarCanvas != null && healthBarCanvas.activeSelf)
+            // (Verificamos 'fillObject.activeSelf' para saber se está visível)
+            if (hideWhenFull && fillObject != null && fillObject.activeSelf)
             {
                 if (currentHealth >= maxHealth)
                 {
                     hideTimer -= Time.deltaTime;
                     if (hideTimer <= 0)
                     {
-                        healthBarCanvas.SetActive(false);
+                        // healthBarCanvas.SetActive(false); // <-- Linha antiga
+                        SetVisualsActive(false); // <-- Nova função
                     }
                 }
             }
         }
         
+        // --- NOVA FUNÇÃO ---
+        // Liga ou desliga as partes visuais da barra
+        private void SetVisualsActive(bool isActive)
+        {
+            if (backgroundObject != null)
+                backgroundObject.SetActive(isActive);
+                
+            if (fillObject != null)
+                fillObject.SetActive(isActive);
+        }
+        
         private void UpdateHealthBar()
         {
+            // (Esta função continua igual)
             if (fillImage != null && maxHealth > 0)
             {
                 float fillAmount = (float)currentHealth / maxHealth;
                 fillImage.fillAmount = fillAmount;
                 
-                // Muda a cor baseado na vida (verde -> amarelo -> vermelho)
                 if (fillAmount > 0.6f)
                     fillImage.color = Color.green;
                 else if (fillAmount > 0.3f)
@@ -96,4 +116,3 @@ namespace MercsOfMayhem.Enemies
         }
     }
 }
-

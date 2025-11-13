@@ -32,7 +32,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2861961007187855683}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -20.723, y: -2.3772, z: 0}
   m_LocalScale: {x: 1, y: 1.0549256, z: 1}
   m_ConstrainProportionsScale: 0
@@ -546,6 +546,8 @@ MonoBehaviour:
   enemy: {fileID: 8860422328509003806}
   fillImage: {fileID: 1807587907852864665}
   healthBarCanvas: {fileID: 7669281779410463933}
+  backgroundObject: {fileID: 6964424360476785424}
+  fillObject: {fileID: 8399185113348875851}
   offset: {x: 0, y: 1.5, z: 0}
   hideWhenFull: 1
   hideDelay: 2

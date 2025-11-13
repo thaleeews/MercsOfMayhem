@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using MercsOfMayhem.Enemies;
+using UnityEngine.SceneManagement; // <-- ADICIONE ESTA LINHA
 
 /// <summary>
 /// Script de vida do Boss. Gerencia HP, dano e morte.
@@ -18,6 +19,7 @@ public class BossHealth : MonoBehaviour
     [SerializeField] private float deathFadeDuration = 1f; // Duração do fade out
     [SerializeField] private bool addDeathRotation = true; // Adiciona rotação na morte
     [SerializeField] private float deathRotationSpeed = 180f; // Velocidade de rotação
+    [SerializeField] private float delayAfterDeath = 3f;
     
     [Header("Componentes")]
     [SerializeField] private Animator animator;
@@ -165,6 +167,7 @@ public class BossHealth : MonoBehaviour
         
         // Desativa o boss (ou destrói, dependendo do que você quiser)
         gameObject.SetActive(false);
+        SceneManager.LoadScene("Vitoria");
         // Ou: Destroy(gameObject);
     }
 }
