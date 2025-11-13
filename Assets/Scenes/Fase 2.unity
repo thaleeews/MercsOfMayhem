@@ -146843,6 +146843,7 @@ GameObject:
   - component: {fileID: 1970338978}
   - component: {fileID: 1970338983}
   - component: {fileID: 1970338984}
+  - component: {fileID: 1970338985}
   m_Layer: 0
   m_Name: boss
   m_TagString: Boss
@@ -147012,8 +147013,8 @@ Transform:
   m_GameObject: {fileID: 1970338977}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 222.8663, y: 2.3461, z: 0}
-  m_LocalScale: {x: 0.7763325, y: 0.6813405, z: 1}
+  m_LocalPosition: {x: 222.63, y: 2.55, z: 0}
+  m_LocalScale: {x: 0.86856085, y: 0.81406564, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1661772099}
@@ -147059,6 +147060,48 @@ MonoBehaviour:
   delayAfterDeath: 3
   animator: {fileID: 1970338978}
   spriteRenderer: {fileID: 1970338981}
+--- !u!114 &1970338985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1970338977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f8e9a2b4c5d6e7f8a9b0c1d2e3f4a5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MercsOfMayhem.Enemies.BossController
+  bossHealth: {fileID: 0}
+  animator: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  shootingPosition: {fileID: 0}
+  bulletPrefab: {fileID: 0}
+  playerTag: Player
+  detectionRange: 20
+  canMove: 1
+  moveSpeed: 3
+  movementBoundsMin: {x: -5, y: 0}
+  movementBoundsMax: {x: 5, y: 5}
+  moveInterval: 2
+  phase1FireRate: 2.5
+  phase1Pattern: 0
+  phase2FireRate: 1.5
+  phase2Pattern: 1
+  phase2MoveSpeed: 4.5
+  phase3FireRate: 0.8
+  phase3Pattern: 2
+  phase3MoveSpeed: 6
+  useCircularPattern: 1
+  circularPatternInterval: 5
+  bulletSpeed: 10
+  tripleShotAngle: 15
+  rapidFireCount: 5
+  rapidFireDelay: 0.15
+  circularBulletCount: 12
+  fireAnimationTrigger: Fire
+  idleAnimationBool: Idle
+  moveAnimationBool: IsMoving
 --- !u!1 &2020285474
 GameObject:
   m_ObjectHideFlags: 0

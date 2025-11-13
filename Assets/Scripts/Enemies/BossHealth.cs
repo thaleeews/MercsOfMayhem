@@ -17,16 +17,15 @@ public class BossHealth : MonoBehaviour
     [Header("Efeitos de Morte")]
     [SerializeField] private float deathAnimationTime = 2f; // Tempo da animação de morte
     [SerializeField] private float deathFadeDuration = 1f; // Duração do fade out
-    [SerializeField] private bool addDeathRotation = true; // Adiciona rotação na morte
-    [SerializeField] private float deathRotationSpeed = 180f; // Velocidade de rotação
-    [SerializeField] private float delayAfterDeath = 3f;
     
     [Header("Componentes")]
     [SerializeField] private Animator animator;
     [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private string playerTag = "Player";
     
     public int CurrentHealth { get; private set; }
     public int MaxHealth => maxHealth;
+    public bool IsDead => isDead;
     
     public static Action<int> OnBossHealthChanged;
     public static Action OnBossDie;
@@ -95,6 +94,28 @@ public class BossHealth : MonoBehaviour
         var bossShoot = GetComponent<BossShoot>();
         if (bossShoot != null) bossShoot.enabled = false;
         
+        // Desabilita colisão com player quando morto
+        Collider2D bossCollider = GetComponent<Collider2D>();
+        if (bossCollider != null)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag(playerTag);
+            if (player != null)
+            {
+                Collider2D playerCollider = player.GetComponent<Collider2D>();
+                if (playerCollider != null)
+                {
+                    Physics2D.IgnoreCollision(bossCollider, playerCollider, true);
+                }
+            }
+        }
+        
+        // Congela rotação do Rigidbody
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        }
+        
         // Inicia efeito visual de morte
         StartCoroutine(nameof(DeathEffect));
     }
@@ -124,7 +145,7 @@ public class BossHealth : MonoBehaviour
     }
     
     /// <summary>
-    /// Corrotina que faz o efeito visual de morte (fade out + rotação)
+    /// Corrotina que faz o efeito visual de morte (fade out)
     /// </summary>
     private IEnumerator DeathEffect()
     {
@@ -132,7 +153,6 @@ public class BossHealth : MonoBehaviour
         
         float elapsed = 0f;
         Color startColor = spriteRenderer.color;
-        Quaternion startRotation = transform.rotation;
         
         // Espera um pouco antes de começar o fade (para ver a animação de morte)
         float delayBeforeFade = Mathf.Max(0, deathAnimationTime - deathFadeDuration);
@@ -141,7 +161,7 @@ public class BossHealth : MonoBehaviour
             yield return new WaitForSeconds(delayBeforeFade);
         }
         
-        // Fade out gradual + rotação
+        // Fade out gradual
         while (elapsed < deathFadeDuration)
         {
             elapsed += Time.deltaTime;
@@ -153,13 +173,6 @@ public class BossHealth : MonoBehaviour
                 Color newColor = startColor;
                 newColor.a = Mathf.Lerp(1f, 0f, progress);
                 spriteRenderer.color = newColor;
-            }
-            
-            // Rotação na morte (opcional)
-            if (addDeathRotation)
-            {
-                float rotationAmount = deathRotationSpeed * Time.deltaTime;
-                transform.Rotate(0, 0, rotationAmount);
             }
             
             yield return null;

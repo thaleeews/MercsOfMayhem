@@ -33,8 +33,6 @@ public class Enemy : MonoBehaviour
     
     [Header("Death Effect")]
     [SerializeField] private float deathFadeDuration = 0.8f; // Duração do fade out ao morrer
-    [SerializeField] private bool addDeathRotation = true; // Adiciona rotação na morte
-    [SerializeField] private float deathRotationSpeed = 360f; // Velocidade de rotação na morte
 
     protected int currentHealth;
     // --- MUDANÇA: 'isDead' é substituído pelo 'currentState'
@@ -230,11 +228,21 @@ public class Enemy : MonoBehaviour
             movementScript.enabled = false; // Desliga as "pernas"
         }
 
-		// IMPORTANTE: Mantemos o collider ligado para permitir que o inimigo caia e colida com o chão
-        // Mas desativamos o trigger para evitar colisões indesejadas
+		// IMPORTANTE: Desabilitamos colisão com player quando morto
+        // Mantemos o collider ligado para permitir que o inimigo caia e colida com o chão
         if (col != null)
         {
             col.isTrigger = false; // Garante que não é trigger para colidir com o chão
+            // Ignora colisão com player através de Physics2D
+            GameObject player = GameObject.FindGameObjectWithTag(playerTag);
+            if (player != null)
+            {
+                Collider2D playerCollider = player.GetComponent<Collider2D>();
+                if (playerCollider != null)
+                {
+                    Physics2D.IgnoreCollision(col, playerCollider, true);
+                }
+            }
         }
         
 		// IMPORTANTE: Mantemos o Rigidbody dinâmico para que a gravidade faça o inimigo cair
@@ -246,8 +254,8 @@ public class Enemy : MonoBehaviour
 			rb.bodyType = RigidbodyType2D.Dynamic;
 			// Garantimos gravidade mínima para que caia
 			rb.gravityScale = Mathf.Max(rb.gravityScale, 1f);
-            // Desativa constraints para permitir rotação e movimento livre
-            rb.constraints = RigidbodyConstraints2D.None;
+            // CORRIGIDO: Mantém a rotação congelada para evitar que fique girando
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
 
         // Inicia os efeitos visuais de morte
@@ -261,7 +269,7 @@ public class Enemy : MonoBehaviour
 
     public void HitPlayer(Transform playerTransform)
     {
-        // --- MUDANÇA: Só damos dano de contato se estivermos patrulhando ---
+        // --- MUDANÇA: Só damos dano de contato se estivermos patrulhando (não mortos, não atacando) ---
         if (currentState != State.Patrolling) return;
         
         // (Seu código de HitPlayer continua o mesmo)
@@ -321,12 +329,11 @@ public class Enemy : MonoBehaviour
         spriteRenderer.color = originalColor;
     }
     
-    // Corrotina que faz o efeito visual de morte (fade out + rotação)
+    // Corrotina que faz o efeito visual de morte (fade out)
     private IEnumerator DeathEffect()
     {
         float elapsed = 0f;
         Color startColor = spriteRenderer.color;
-        Quaternion startRotation = transform.rotation;
         
         // Espera um pouco antes de começar o fade (para ver a animação de morte)
         float delayBeforeFade = Mathf.Max(0, deathAnimationTime - deathFadeDuration);
@@ -349,13 +356,6 @@ public class Enemy : MonoBehaviour
                 spriteRenderer.color = newColor;
             }
             
-            // Rotação na morte (opcional)
-            if (addDeathRotation && rb != null)
-            {
-                float rotationAmount = deathRotationSpeed * Time.deltaTime;
-                transform.Rotate(0, 0, rotationAmount);
-            }
-            
             yield return null;
         }
         
@@ -372,4 +372,5 @@ public class Enemy : MonoBehaviour
     // Métodos públicos para a HealthBar acessar
     public int GetCurrentHealth() => currentHealth;
     public int GetMaxHealth() => maxHealth;
+    public bool IsDead() => currentState == State.Dead;
 }

@@ -26,6 +26,14 @@ public class PlayerCollision : MonoBehaviour
     private void CollideWithEnemy(Collision2D other)
     {
         Enemy enemy = other.gameObject.GetComponent<Enemy>();
+        if (enemy == null) return;
+        
+        // Verifica se o inimigo está morto - se estiver, ignora a colisão completamente
+        if (enemy.IsDead())
+        {
+            return; // Inimigo morto, não deve colidir com o player
+        }
+        
         if (Physics2D.Raycast(transform.position, Vector2.down, halfHeight + 1f, LayerMask.GetMask("Enemy")))
         {
             Vector2 velocity = rigidBody.linearVelocity;
