@@ -65,11 +65,22 @@ public class PlayerHealth : MonoBehaviour
         // Garante que o tempo está normal antes de carregar a cena
         Time.timeScale = 1f;
         
+        // Garante que o GameManager existe
+        GameManager.EnsureInstance();
+        
         string currentSceneName = SceneManager.GetActiveScene().name;
         if (GameManager.Instance != null)
         {
             GameManager.Instance.sceneToReload = currentSceneName;
+            Debug.Log($"✅ Cena '{currentSceneName}' salva antes de ir para Derrota");
         }
+        else
+        {
+            Debug.LogWarning("⚠️ GameManager não pôde ser criado!");
+        }
+        
+        // Carrega a cena de Derrota
+        // O GameManager vai garantir que o DefeatScreenMenu existe quando a cena carregar
         SceneManager.LoadScene("Derrota");
     }
 }

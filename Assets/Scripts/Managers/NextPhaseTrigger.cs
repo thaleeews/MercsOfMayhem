@@ -17,6 +17,17 @@ public class NextPhaseTrigger : MonoBehaviour
         // 2. Verifica se o objeto que entrou tem a tag "Player"
         if (other.CompareTag(playerTag))
         {
+            // Garante que o GameManager existe
+            GameManager.EnsureInstance();
+            
+            // Salva a cena atual antes de carregar a próxima
+            if (GameManager.Instance != null)
+            {
+                string currentSceneName = SceneManager.GetActiveScene().name;
+                GameManager.Instance.sceneToReload = currentSceneName;
+                Debug.Log($"✅ Cena '{currentSceneName}' salva antes de carregar '{sceneToLoad}'");
+            }
+            
             // 3. Se for o player, carrega a cena!
             Debug.Log($"Indo para a cena: {sceneToLoad}");
             SceneManager.LoadScene(sceneToLoad);

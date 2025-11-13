@@ -181,11 +181,19 @@ public class BossHealth : MonoBehaviour
         // Garante que o tempo está normal antes de carregar a cena
         Time.timeScale = 1f;
         
+        // Garante que o GameManager existe
+        GameManager.EnsureInstance();
+        
         // Salva a cena atual no GameManager para poder reiniciar depois
         if (GameManager.Instance != null)
         {
             string currentSceneName = SceneManager.GetActiveScene().name;
             GameManager.Instance.sceneToReload = currentSceneName;
+            Debug.Log($"✅ Cena '{currentSceneName}' salva antes de ir para Vitória");
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ GameManager não pôde ser criado!");
         }
         
         // Desativa o boss (ou destrói, dependendo do que você quiser)

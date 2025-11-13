@@ -12,6 +12,9 @@ public class GameplayMusic : MonoBehaviour
 
     private void Start()
     {
+        // Garante que o GameManager existe (importante para salvar a cena)
+        GameManager.EnsureInstance();
+        
         // Tenta carregar automaticamente se não estiver configurado
         if (gameplayMusicClip == null)
         {
