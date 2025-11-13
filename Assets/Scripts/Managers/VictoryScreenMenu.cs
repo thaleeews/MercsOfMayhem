@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// Menu de Vitória - Gerencia botões da tela de vitória
@@ -9,6 +10,21 @@ public class VictoryScreenMenu : MonoBehaviour
     [Header("Configuração")]
     [SerializeField] private string nextLevelScene = ""; // Nome da próxima fase (se houver)
     [SerializeField] private bool hasNextLevel = false; // Se tem próxima fase
+
+    private void Awake()
+    {
+        // Garante que o tempo está rodando normalmente ANTES de tudo
+        Time.timeScale = 1f;
+        
+        // Garante que há um EventSystem na cena (necessário para botões funcionarem)
+        if (EventSystem.current == null)
+        {
+            GameObject eventSystem = new GameObject("EventSystem");
+            eventSystem.AddComponent<EventSystem>();
+            eventSystem.AddComponent<UnityEngine.EventSystems.StandaloneInputModule>();
+            Debug.Log("✅ EventSystem criado automaticamente na cena de Vitória");
+        }
+    }
 
     private void Start()
     {
@@ -31,6 +47,8 @@ public class VictoryScreenMenu : MonoBehaviour
     /// </summary>
     public void NextLevel()
     {
+        Time.timeScale = 1f; // Garante que o tempo está normal
+        
         if (hasNextLevel && !string.IsNullOrEmpty(nextLevelScene))
         {
             Debug.Log($"➡️ Indo para a próxima fase: {nextLevelScene}");
@@ -49,6 +67,7 @@ public class VictoryScreenMenu : MonoBehaviour
     /// </summary>
     public void RestartLevel()
     {
+        Time.timeScale = 1f; // Garante que o tempo está normal
         Debug.Log("🔄 Reiniciando fase...");
         
         // Verifica se existe GameManager com a cena salva
@@ -81,6 +100,7 @@ public class VictoryScreenMenu : MonoBehaviour
     /// </summary>
     public void QuitGame()
     {
+        Time.timeScale = 1f; // Garante que o tempo está normal
         Debug.Log("👋 Saindo do jogo...");
         
         #if UNITY_EDITOR

@@ -1,11 +1,27 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// Menu de Derrota - Gerencia botões da tela de Game Over
 /// </summary>
 public class DefeatScreenMenu : MonoBehaviour
 {
+    private void Awake()
+    {
+        // Garante que o tempo está rodando normalmente ANTES de tudo
+        Time.timeScale = 1f;
+        
+        // Garante que há um EventSystem na cena (necessário para botões funcionarem)
+        if (EventSystem.current == null)
+        {
+            GameObject eventSystem = new GameObject("EventSystem");
+            eventSystem.AddComponent<EventSystem>();
+            eventSystem.AddComponent<UnityEngine.EventSystems.StandaloneInputModule>();
+            Debug.Log("✅ EventSystem criado automaticamente na cena de Derrota");
+        }
+    }
+
     private void Start()
     {
         // Garante que o tempo está rodando normalmente
@@ -27,6 +43,7 @@ public class DefeatScreenMenu : MonoBehaviour
     /// </summary>
     public void RetryLevel()
     {
+        Time.timeScale = 1f; // Garante que o tempo está normal
         Debug.Log("🔄 Tentando novamente...");
         
         // Verifica se existe GameManager com a cena salva
@@ -59,6 +76,7 @@ public class DefeatScreenMenu : MonoBehaviour
     /// </summary>
     public void QuitGame()
     {
+        Time.timeScale = 1f; // Garante que o tempo está normal
         Debug.Log("👋 Saindo do jogo...");
         
         #if UNITY_EDITOR

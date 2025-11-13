@@ -178,6 +178,16 @@ public class BossHealth : MonoBehaviour
             yield return null;
         }
         
+        // Garante que o tempo está normal antes de carregar a cena
+        Time.timeScale = 1f;
+        
+        // Salva a cena atual no GameManager para poder reiniciar depois
+        if (GameManager.Instance != null)
+        {
+            string currentSceneName = SceneManager.GetActiveScene().name;
+            GameManager.Instance.sceneToReload = currentSceneName;
+        }
+        
         // Desativa o boss (ou destrói, dependendo do que você quiser)
         gameObject.SetActive(false);
         SceneManager.LoadScene("Vitoria");

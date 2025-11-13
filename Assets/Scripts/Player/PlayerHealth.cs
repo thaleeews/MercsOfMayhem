@@ -62,8 +62,14 @@ public class PlayerHealth : MonoBehaviour
 
     private void GoToDefeatScreen()
     {
+        // Garante que o tempo está normal antes de carregar a cena
+        Time.timeScale = 1f;
+        
         string currentSceneName = SceneManager.GetActiveScene().name;
-        GameManager.Instance.sceneToReload = currentSceneName;
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.sceneToReload = currentSceneName;
+        }
         SceneManager.LoadScene("Derrota");
     }
 }
