@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement; // Precisamos disto!
 public class PauseManager : MonoBehaviour
 {
     // Não precisamos de [SerializeField] se o vamos encontrar automaticamente
-    private GameObject pauseMenuPanel;
+    [SerializeField] private GameObject pauseMenuPanel;
 
     private bool isPaused = false;
 
