@@ -49,20 +49,21 @@ public class PlayerHealth : MonoBehaviour
             if (rb != null) rb.linearVelocity = Vector2.zero;
             var col = GetComponent<Collider2D>();
             if (col != null) col.enabled = false;
+            Debug.Log($"caiu aqui");
 
-            Invoke(nameof(RestartLevel), deathAnimationTime);
+            Invoke(nameof(GoToDefeatScreen), deathAnimationTime);
         }
-    }
-
-    private void RestartLevel()
-    {
-        // Pega o nome da cena atual (ex: "Fase2") e a carrega novamente
-        string currentSceneName = SceneManager.GetActiveScene().name;
-        SceneManager.LoadScene(currentSceneName);
     }
 
     private void RestoreHealth(int healthRecovered)
     {
-        // Possivel func para recuperar vida
+    }
+
+
+    private void GoToDefeatScreen()
+    {
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        GameManager.Instance.sceneToReload = currentSceneName;
+        SceneManager.LoadScene("Derrota");
     }
 }
