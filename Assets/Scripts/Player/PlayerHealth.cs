@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] private Animator animator;
-    [SerializeField] private int health = 100; 
+    [SerializeField] private int health; 
     [SerializeField] private float deathAnimationTime = 1.5f; 
 
     public int currentHealth {get; private set;}
