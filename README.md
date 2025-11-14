@@ -14,11 +14,25 @@ Este projeto foi desenvolvido como parte do **Trabalho de Desenvolvimento de Jog
 - Thales Clemente Pasquotto (22.222.033-7)
 - Victor Caldeira Iak (22.122.057-7)
 
-## Apresentação do Projeto
-https://youtu.be/XMuOHjaoiXM
+## Apresentação Parcial do Projeto
+[Vídeo](https://youtu.be/XMuOHjaoiXM)
+
+## Apresentação Final do Projeto
+[Vídeo](https://youtu.be/xjbbtBGBtYE)
 
 ## Tópicos
 
 [📄 Introdução](docs/1.introducao.md)
 <br>
 [📄 Público Alvo](docs/2.publico_alvo.md)
+<br>
+[📄 Estética](docs/3.estetica.md)
+<br>
+[📄 Dinâmica](docs/4.dinamica.md)
+<br>
+[📄 Mecânica](docs/5.mecanica.md)
+<br>
+[📄 Prefabs](docs/6.prefabs.md)
+<br>
+[📄 Prototipação](docs/7.prototipacao.md)
+
